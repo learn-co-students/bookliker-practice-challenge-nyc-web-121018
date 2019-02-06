@@ -4,15 +4,61 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="./index.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.3/dist/semantic.min.css">
 </head>
 <body>
-
+	<div class "sidebar-container">
+  <div class="ui  visible fixed inverted left vertical sidebar menu">
+		<div class="item">
+			<div class="header">
+			<h2>	All Books </h2>
+			</div>
 	<div id="list-panel">
-		<ul id="list">
-
+		<ul id="list" class="ui right item">
 		</ul>
 	</div>
-	<div id="show-panel"></div>
+</div>
+</div>
+</div>
+
+  <div class="pusher">
+		<div class="ui container">
+	 <div class="ui basic segment">
+		<div id="show-panel">
+			<h1>Add new book to list or click on book for more info</h1>
+<hr>
+			<form class="ui form">
+				<div class="field">
+					<label>User</label>
+					<input type="text" class="newuser" name="user-name" placeholder="Username">
+				</div>
+  <div class="field">
+    <label>Title</label>
+    <input type="text" class="newtitle" name="book-name" placeholder="Title of Book">
+  </div>
+  <div class="field">
+    <label>Author</label>
+    <input type="text" class="newauthor" name="author-name" placeholder="Author Name">
+  </div>
+	<div class="field">
+		<label>Image URL</label>
+		<input type="text" class="newimg" name="author-name" placeholder="http://img-url.png">
+	</div>
+	<div class="field">
+	<label>Description</label>
+	<textarea name="description" class="newdesc" placeholder=" ">
+</textarea>
+  </div>
+  <button class="ui button" type="submit">Submit</button>
+</form>
+
+
+
+	</div>
+</div>
+</div>
+</div>
+
 	<script type="text/javascript" src="./index.js"></script>
 </body>
 </html>
