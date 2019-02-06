@@ -1,4 +1,48 @@
-body {
+/* body {
 	display: grid;
-	grid-template-columns: 2fr 8fr
+	grid-template-columns: 3fr 8fr
+} */
+
+.header{
+    padding-top:15px;
+		color: white !important;
+}
+
+.ui-header{
+	color: black;
+		/* margin-left: 25px; */
+}
+
+ li.booktitle:hover, li.booktitle:active {font-size: 125%;}
+.booktitle {
+	color: white !important;
+	margin-left: 10px;
+ line-height: 2.5em
+
+}
+
+.pusher {
+    padding-left: 260px;
+}
+
+.ui-form {
+	position: fixed;
+
+}
+			/*
+			margin-left: 30px; */
+/*
+	Center aligned row */
+
+
+	.sidebar-container {
+    width: 260px;
+    overflow: hidden;
+    height: 100%;
+    position: fixed;
+    margin: 0;
+    top: 0;
+    left: 0;
+}
+
 }
