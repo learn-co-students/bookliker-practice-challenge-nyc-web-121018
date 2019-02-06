@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (e.target.innerText === 'Like this book!') {
         foundbook["users"].push(loggedInUser)
         showBook.innerHTML = renderBookdata([foundbook])
-        changeUserLike(e.target.dataset.id, loggedInUser, foundbook)   // changeUserLike is the all encompassing patch that allows user to like/unlike
+        changeUserLike(e.target.dataset.id, foundbook)   // changeUserLike is the all encompassing patch that allows user to like/unlike
       } else {
         // if the logged in user unlikes the book, then we update the DOM and pass in that PATCH request
         e.target.innerText === 'Unlike this book!'
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         foundbook["users"] = newUsers
         showBook.innerHTML = renderBookdata([foundbook])
-        changeUserLike(e.target.dataset.id, loggedInUser, foundbook)
+        changeUserLike(e.target.dataset.id, foundbook)
       }
     }
   })
@@ -71,7 +71,7 @@ function getUsers(path) {   //fetches all users and sets loggedInUser
     })
 }
 
-function changeUserLike(id, user, book) {   // all purpose fetch to allow for liking or unliking a book
+function changeUserLike(id, book) {   // all purpose fetch to allow for liking or unliking a book
   let bookUsers = book["users"]             // by loggedInUser
                                             // the book that is received to this function already has had the users properly edited
   fetch(booksUrl + `/${id}`, {
