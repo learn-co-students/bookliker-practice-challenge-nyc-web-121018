@@ -1,118 +1,99 @@
-
 document.addEventListener("DOMContentLoaded", function() {
-let showBook = document.querySelector("#show-panel")
-let allBooks = []
-let allUsers = []
-const bookList = document.querySelector("#list-panel")
-const bookLink= document.querySelector(".book-item")
-const likeButton = document.querySelector("#liked")
-const me = {
-id: 1,
-username: "pouros"
-}
-
-fetch ("http://localhost:3000/users")
-  .then(r => r.json())
-  .then(data => {
-    allUsers = data
-    let users = allUsers.map(user =>{
-      return `
-      <li data-id="${user.id}">${user.username}</li>`
-    })
-
-})//end of fetch
-
-fetch ("http://localhost:3000/books")
-  .then(r => r.json())
-  .then(data => {
-    allBooks = data
-    let books = allBooks.map(book =>{
-      return `
-      <li data-id="${book.id}" class="book-item">${book.title}</li>`
-    })
-    bookList.innerHTML = books.join('')
-})//end of fetch
-
-bookList.addEventListener('click', (e)=>{
-  e.preventDefault()
-  //console.log(e.target.dataset.id)
-  let foundBook = allBooks.find(book => {
-    return parseInt(e.target.dataset.id) === book.id
-  })//end of found book
-  //console.log(foundBook)
-  //append the book details to showBook
-//let userNames =
-  //let userNames = foundBook.users
-
-  function userNames(foundBook) {return foundBook.users.map(user => {
-    return `<li id=${user.id}>${user.username}</li>`
-  }).join('')}
-
-//console.log(userNames);
-
-    showBook.innerHTML= `
-    <div>
-      <p>${foundBook.title}</p>
-      <img src="${foundBook.img_url}">
-      <p>${foundBook.description}</p>
-      <ul>${userNames(foundBook)} </ul>
-      <button id=${foundBook.id} class="liked">Read</button>
-  </div>
-    `
-
-})//end of booklist add event istener
-showBook.addEventListener('click', (e)=>{
-  //console.log(e.target.id);
-  let foundBook = allBooks.find(book => {
-    return parseInt(e.target.id) === book.id
-  })//end of found book
-
- //console.log(foundBook);
-  if(e.target.className === "liked"){
-  //console.log(e.target)
-  //console.log(foundBook.users)
+  const bookListContainer = document.querySelector("#list-panel")
+  const bookDetailContainer = document.querySelector("#show-panel")
+  let allBooks = []
+  const me = {
+    id: 1,
+    username: "pouros"
   }
-  let currentUsers = foundBook.users
-  //console.log(currentUsers)
 
-  foundBook.users.push(me)
-  // console.log(currentUsers)
-  //
-  // console.log(foundBook.users);
+  fetch("http://localhost:3000/books")
+    .then(r => r.json())
+    .then(bookData => {
+      allBooks = bookData
+      //console.log(allBooks)
+      bookHTML = bookData.map(book =>{
+        return `
+        <li data-id=${book.id}>${book.title}</li>
+        `
+      })//end of map
+      bookListContainer.innerHTML += bookHTML.join('')
+    })//end then
 
-  function userNames(foundBook) {return foundBook.users.map(user => {
-    return `<li id=${user.id}>${user.username}</li>`
-  }).join('')}
+  bookListContainer.addEventListener('click', (e)=>{
+    //console.log(e.target);
+    let chosenBookId = parseInt(e.target.dataset.id)
+    //console.log(chosenBookId);
+    let chosenBook = allBooks.find(book =>{
+      return chosenBookId === book.id
+    })
+    //console.log(chosenBook);
+    console.log(chosenBook.users);
+    let usernames = chosenBook.users.map(user =>{
+      return `<li data-id={user.id} id="username">${user.username}</li>`
+    }).join("")
 
-//console.log(userNames);
+    //console.log(usernames);
 
-    showBook.innerHTML= `
-    <div>
-      <p>${foundBook.title}</p>
-      <img src="${foundBook.img_url}">
-      <p>${foundBook.description}</p>
-      <ul>${userNames(foundBook)} </ul>
-      <button id=${foundBook.id} class="liked">Read</button>
-  </div>
-    `
-    fetch(`http://localhost:3000/books/${foundBook.id}`, {
-        method: "PATCH",
-        headers: {
+    fetch(`http://localhost:3000/books/${chosenBookId}`)
+    .then(r => r.json())
+    .then(chosenBook => {
+      //console.log(chosenBook.users[username]);
+      let chosenBookHTML=`
+          <div>
+          <h2>${chosenBook.title}</h2>
+          <img src=${chosenBook.img_url}>
+          <p>${chosenBook.description}</p>
+          <h4>${usernames}<h4>
+          <button id=${chosenBook.id} class="liked">Read</button>
+          </div>`
+          bookDetailContainer.innerHTML=chosenBookHTML
+    })//end then
+  })//end of addEventListener
+
+  bookDetailContainer.addEventListener('click', (e)=>{
+    if(e.target.className === "liked"){
+        //console.log(e.target);
+        let chosenBookId = parseInt(e.target.id)
+        //console.log(chosenBookId);
+
+        let chosenBook = allBooks.find(book =>{
+          return chosenBookId === book.id
+        })
+        //console.log(chosenBook.users)
+        //console.log(chosenBook);
+        chosenBook.users.push(me)
+        //console.log(chosenBook.users);
+
+        let usernames = chosenBook.users.map(user =>{
+          return `<li data-id={user.id} id="username">${user.username}</li>`
+        }).join("")
+        console.log(usernames);
+        let chosenBookHTML=`
+            <div>
+            <h2>${chosenBook.title}</h2>
+            <img src=${chosenBook.img_url}>
+            <p>${chosenBook.description}</p>
+            <h4>${usernames}<h4>
+            <button id=${chosenBook.id} class="liked">Read</button>
+            </div>`
+            bookDetailContainer.innerHTML= chosenBookHTML
+
+        fetch(`http://localhost:3000/books/${chosenBookId}`, {
+          method: "PATCH",
+          headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
-            },
-            body: JSON.stringify({
-              "users":foundBook.users
-})
-})
-  })//end of showbook event listener
+          },
+          body: JSON.stringify({
+            users: chosenBook.users
+          })
 
+        })//end fetch
+        //.then(r => console.log(chosenBook.users))
 
+    }//end ifstatement
 
-
-
-
-
-
+  })//end addEventListener
 
 });//end of DOMContentLoaded
